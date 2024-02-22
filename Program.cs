@@ -60,8 +60,6 @@ internal class Program
     );
 }
 
-
-
         // Console.WriteLine(myComputer.MotherBoard);
         // Console.WriteLine(myComputer.HasLTE);
         // Console.WriteLine(myComputer.VideoCard);
