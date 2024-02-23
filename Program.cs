@@ -3,6 +3,7 @@ using System.Data;
 using dotnetProject_1.Models;
 using Microsoft.Data.SqlClient;
 using Dapper;
+using dotnetProject_1.Data;
 
 namespace dotnetProject_1
 {
@@ -10,10 +11,7 @@ internal class Program
 {
     static void Main(string[] args)
     {
-
-        string connectionString="Server=172.17.0.3;Database=DotNetCourseDatabase;TrustServerCertificate=true;Trusted_Connection=false;User Id=SA;Password=Test123!";
-
-        IDbConnection dbConnection=new SqlConnection(connectionString);
+        DataContextDapper dapper = new DataContextDapper();
 
         Computer myComputer=new Computer()
         {
@@ -30,24 +28,17 @@ internal class Program
         // Console.WriteLine(rightNow);
 
         //Inserting data in to table
-        string sql=@"INSERT INTO TutorialAppSchema.Computer(
-            Motherboard,
-            HasWifi,
-            HasLTE,
-            ReleaseDate,
-            VideoCard
-            ) 
-            VALUES(
-                ' "+myComputer.MotherBoard+" ',' "+myComputer.HasWifi+" ',' "+myComputer.HasLTE+" ',' "+myComputer.ReleaseDate+"',' "+myComputer.VideoCard+"')";
+        string sql = @"INSERT INTO TutorialAppSchema.Computer(Motherboard,HasWifi,HasLTE,ReleaseDate,VideoCard) 
+                    VALUES('ABC','true','false','2024-02-23','NVidea')";
 
-        int result=dbConnection.Execute(sql);
+        dapper.ExecuteSql(sql);
         Console.WriteLine(sql);
 
         //getting data from table
 
         string sqlSelect=@"SELECT * from TutorialAppSchema.Computer";
 
-        IEnumerable<Computer> computers=dbConnection.Query<Computer>(sqlSelect);
+        IEnumerable<Computer> computers=dapper.LoadData<Computer>(sqlSelect);
 
       foreach (Computer comp in computers)
 {
@@ -59,10 +50,6 @@ internal class Program
         "VideoCard: " + comp.VideoCard
     );
 }
-
-        // Console.WriteLine(myComputer.MotherBoard);
-        // Console.WriteLine(myComputer.HasLTE);
-        // Console.WriteLine(myComputer.VideoCard);
     }
 }
 
